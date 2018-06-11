@@ -1,3 +1,1 @@
-Hi,
-
-These are basic containers for running SLURM on docker.
+These are very basic containers for running SLURM on docker.
