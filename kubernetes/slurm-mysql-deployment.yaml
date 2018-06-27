@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: slurm-mysql
+  name: slurm-mysql
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: slurmctld
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_DATABASE
+          value: slurm_acct_db
+        - name: MYSQL_PASSWORD
+          value: password
+        - name: MYSQL_RANDOM_ROOT_PASSWORD
+          value: "yes"
+        - name: MYSQL_USER
+          value: slurm
+        image: mariadb:latest
+#mysql:5.7
+        name: slurm-mysql
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: var-lib-mysql
+      hostname: slurm-mysql
+      restartPolicy: Always
+      volumes:
+      - name: var-lib-mysql
+        persistentVolumeClaim:
+          claimName: var-lib-mysql
+status: {}

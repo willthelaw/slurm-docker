@@ -1,0 +1,51 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose -f docker-compose.yml convert
+    kompose.version: 1.13.0 (84fa826)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: c2
+  name: c2
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: c2
+    spec:
+      containers:
+      - args:
+        - slurmd
+        image: slurm-docker-cluster:17.11.2
+        name: c2
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/munge
+          name: etc-munge
+        - mountPath: /etc/slurm-llnl
+          name: etc-slurm
+        - mountPath: /data
+          name: slurm-jobdir
+        - mountPath: /var/log/slurm
+          name: var-log-slurm
+      hostname: c2
+      restartPolicy: Always
+      volumes:
+      - name: etc-munge
+        persistentVolumeClaim:
+          claimName: etc-munge
+      - name: etc-slurm
+        persistentVolumeClaim:
+          claimName: etc-slurm
+      - name: slurm-jobdir
+        persistentVolumeClaim:
+          claimName: slurm-jobdir
+      - name: var-log-slurm
+        persistentVolumeClaim:
+          claimName: var-log-slurm
+status: {}

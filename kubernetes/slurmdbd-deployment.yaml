@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: slurmdbd
+  name: slurmdbd
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: slurmdbd
+    spec:
+      containers:
+      - args:
+        - slurmdbd
+        image: willthelaw/slurm-docker-ubuntu:latest
+        name: slurmdbd
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/munge
+          name: etc-munge
+        - mountPath: /etc/slurm-llnl
+          name: etc-slurm
+        - mountPath: /var/log/slurm
+          name: var-log-slurm
+      hostname: slurmdbd
+      restartPolicy: Always
+      volumes:
+      - name: etc-munge
+        persistentVolumeClaim:
+          claimName: etc-munge
+      - name: etc-slurm
+        persistentVolumeClaim:
+          claimName: etc-slurm
+      - name: var-log-slurm
+        persistentVolumeClaim:
+          claimName: var-log-slurm
+status: {}
