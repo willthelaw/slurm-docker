@@ -15,7 +15,6 @@ then
     chown -R munge:munge /etc/munge
     chmod 700 /etc/munge
     chown -R munge:munge /var/run/munge
-    chmod 755 /var/run/munge
     gosu munge /usr/sbin/munged
 
     echo "---> Starting the Slurm Database Daemon (slurmdbd) ..."
@@ -45,8 +44,7 @@ then
     chown -R slurm:slurm /var/*/slurm*
     chown -R munge:munge /etc/munge
     chmod 700 /etc/munge
-    chown -R munge:munge /var/run/munge
-    chmod 755 /var/run/munge   
+    chown -R munge:munge /var/run/munge    
     echo "---> Starting the MUNGE Authentication service (munged) ..."
     gosu munge /usr/sbin/munged
 
@@ -76,7 +74,6 @@ then
     chown -R munge:munge /etc/munge
     chmod 700 /etc/munge
     chown -R munge:munge /var/run/munge
-    chmod 755 /var/run/munge
     echo "---> Starting the MUNGE Authentication service (munged) ..."
     gosu munge /usr/sbin/munged
 

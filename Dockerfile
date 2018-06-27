@@ -7,7 +7,7 @@ LABEL org.label-schema.docker.cmd="docker-compose up -d" \
 
 ARG SLURM_VERSION=17.11.2
 #ARG SLURM_DOWNLOAD_MD5=b32f4260a921d335a2d52950593f0a29
-ARG SLURM_DOWNLOAD_URL=https://download.schedmd.com/slurm/slurm-17.11.2.tar.bz2
+#ARG SLURM_DOWNLOAD_URL=https://download.schedmd.com/slurm/slurm-17.11.2.tar.bz2
 
 ARG GOSU_VERSION=1.10
 
