@@ -14,7 +14,7 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        io.kompose.service: slurmctld
+        io.kompose.service: slurm-mysql
     spec:
       containers:
       - env:

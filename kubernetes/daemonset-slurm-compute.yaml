@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: slurm-compute
+spec:
+  selector:
+    matchLabels:
+      name: slurm-compute 
+  template:
+    metadata:
+      labels:
+        name: slurm-compute 
+    spec:
+      nodeSelector: 
+        type: slurm-compute
+      containers:
+      - image: willthelaw/slurm-docker-ubuntu:latest
+        imagePullPolicy: Always
+        name: slurmd
+        ports:
+        resources: {}
+        volumeMounts:
+        - mountPath: /root/hostname
+          name: localhost-name
+          readOnly: true
+      volumes:
+        - name: localhost-name 
+          hostPath:
+          # directory location on host
+            path: /etc/hostname
+            type: File
+      serviceAccount: default
+      terminationGracePeriodSeconds: 10

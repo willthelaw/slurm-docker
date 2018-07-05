@@ -2,12 +2,10 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose -f docker-compose.yml convert
-    kompose.version: 1.13.0 (84fa826)
   creationTimestamp: null
   labels:
-    io.kompose.service: c2
-  name: c2
+    io.kompose.service: slurmcontroller
+  name: slurmcontroller
 spec:
   replicas: 1
   strategy:
@@ -16,13 +14,26 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        io.kompose.service: c2
+        io.kompose.service: slurmcontroller
     spec:
       containers:
       - args:
-        - slurmd
-        image: slurm-docker-cluster:17.11.2
-        name: c2
+        - slurmdbd
+        image: willthelaw/slurm-docker-ubuntu:latest
+        name: slurmdbd
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/munge
+          name: etc-munge
+        - mountPath: /etc/slurm-llnl
+          name: etc-slurm
+        - mountPath: /var/log/slurm
+          name: var-log-slurm
+      containers:
+      - args:
+        - slurmctld
+        image: willthelaw/slurm-docker-ubuntu:latest
+        name: slurmctld
         resources: {}
         volumeMounts:
         - mountPath: /etc/munge
@@ -33,7 +44,7 @@ spec:
           name: slurm-jobdir
         - mountPath: /var/log/slurm
           name: var-log-slurm
-      hostname: c2
+      hostname: slurmcontroller
       restartPolicy: Always
       volumes:
       - name: etc-munge
@@ -42,10 +53,10 @@ spec:
       - name: etc-slurm
         persistentVolumeClaim:
           claimName: etc-slurm
-      - name: slurm-jobdir
-        persistentVolumeClaim:
-          claimName: slurm-jobdir
       - name: var-log-slurm
         persistentVolumeClaim:
           claimName: var-log-slurm
+      - name: slurm-jobdir
+        persistentVolumeClaim:
+          claimName: slurm-jobdir
 status: {}
