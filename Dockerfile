@@ -14,6 +14,7 @@ ARG GOSU_VERSION=1.10
 RUN apt-get update
 
 RUN apt-get  -y install \
+           libnss-extrausers \
            wget \
            bzip2 \
            perl \
@@ -49,6 +50,10 @@ RUN set -x \
 #    && rm -rf $GNUPGHOME /usr/local/bin/gosu.asc \
     && chmod +x /usr/local/bin/gosu \
     && gosu nobody true
+
+#enable extra users files for /etc/{passwd,shadow,group}
+RUN set -x \
+    sed -i '/^\(passwd\|group\|shadow\):/{ s/$/ extrausers/; }' /etc/nsswitch.conf
 
 RUN set -x \
     && mkdir /var/spool/slurmd \
