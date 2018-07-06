@@ -14,6 +14,7 @@ ARG GOSU_VERSION=1.10
 RUN apt-get update
 
 RUN apt-get  -y install \
+           screen \
            libnss-extrausers \
            wget \
            bzip2 \

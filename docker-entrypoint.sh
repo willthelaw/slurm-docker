@@ -15,7 +15,12 @@ then
     chmod 400 /etc/munge/munge.key
     chown -R munge:munge /var/run/munge
     chmod -R 755 /var/run/munge
-    exec gosu munge /usr/sbin/munged -F
+    while () #until munge socket exists??
+    do
+        exec gosu munge /usr/sbin/munged -F
+        chown -R munge:munge /var/run/munge
+        chmod -R 755 /var/run/munge
+    done
 fi
 
 if [ "$1" = "slurmdbd" ]
@@ -35,6 +40,13 @@ then
 #        sleep 2
 #    done
 #    echo "-- slurmdbd is now active ..."
+
+    #wait until munge and slurmdbd sockets are up
+    until [ -S /var/run/munge/munge.socket.2 ] && [ -d "/proc/`cat /var/run/slurmdbd/slurmdbd.pid`" ] ]
+    do
+      sleep 2
+      echo "waiting for munge and slurmdbd to start"
+    done
 
     echo "---> Starting the Slurm Controller Daemon (slurmctld) ..."
     sleep 40
