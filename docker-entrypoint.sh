@@ -7,8 +7,6 @@ then
     if [ ! -e /etc/munge/munge.key ]
     then
         /usr/sbin/create-munge-key
-        chown -R munge:munge /etc/munge
-        chmod 700 /etc/munge
     fi
     #this should likely be removed, but had some issues with munge perms
     mkdir -p /var/run/munge
@@ -23,6 +21,7 @@ fi
 if [ "$1" = "slurmdbd" ]
 then
     echo "---> Starting the Slurm Database Daemon (slurmdbd) ..."
+    sleep 20
     exec gosu slurm /usr/sbin/slurmdbd -Dvvv
 fi
 
@@ -38,6 +37,7 @@ then
 #    echo "-- slurmdbd is now active ..."
 
     echo "---> Starting the Slurm Controller Daemon (slurmctld) ..."
+    sleep 40
     exec gosu slurm /usr/sbin/slurmctld -iDvvv
 fi
 
