@@ -77,8 +77,8 @@ RUN set -x \
 RUN set -x \
     && ln -s /etc/slurm-llnl /etc/slurm
 
-COPY slurm.conf /etc/slurm/slurm.conf
-COPY slurmdbd.conf /etc/slurm/slurmdbd.conf
+#COPY slurm.conf /etc/slurm/slurm.conf
+#COPY slurmdbd.conf /etc/slurm/slurmdbd.conf
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

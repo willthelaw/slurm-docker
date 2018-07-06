@@ -1,22 +1,24 @@
 #!/bin/bash
 set -e
 
-if [ "$1" = "slurmdbd" ]
+if [ "$1" = "munge" ]
 then
     echo "---> Starting the MUNGE Authentication service (munged) ..."
     if [ ! -e /etc/munge/munge.key ]
     then
-	/usr/sbin/create-munge-key
+        /usr/sbin/create-munge-key
         chown -R munge:munge /etc/munge
         chmod 700 /etc/munge
     fi
     #this should likely be removed, but had some issues with munge perms
-    chown -R slurm:slurm /var/*/slurm*
     chown -R munge:munge /etc/munge
     chmod 700 /etc/munge
     chown -R munge:munge /var/run/munge
-    gosu munge /usr/sbin/munged
+    exec gosu munge /usr/sbin/munged
+fi
 
+if [ "$1" = "slurmdbd" ]
+then
     echo "---> Starting the Slurm Database Daemon (slurmdbd) ..."
 
     {
@@ -34,20 +36,6 @@ fi
 
 if [ "$1" = "slurmctld" ]
 then
-    if [ ! -e /etc/munge/munge.key ]
-    then
-        /usr/sbin/create-munge-key
-        chown -R munge:munge /etc/munge
-        chmod 700 /etc/munge
-    fi
-    #this should likely be removed, but had some issues with munge perms
-    chown -R slurm:slurm /var/*/slurm*
-    chown -R munge:munge /etc/munge
-    chmod 700 /etc/munge
-    chown -R munge:munge /var/run/munge    
-    echo "---> Starting the MUNGE Authentication service (munged) ..."
-    gosu munge /usr/sbin/munged
-
     echo "---> Waiting for slurmdbd to become active before starting slurmctld ..."
 
     until 2>/dev/null >/dev/tcp/slurmdbd/6819
@@ -63,28 +51,13 @@ fi
 
 if [ "$1" = "slurmd" ]
 then
-    if [ ! -e /etc/munge/munge.key ]
-    then
-        /usr/sbin/create-munge-key
-        chown -R munge:munge /etc/munge
-        chmod 700 /etc/munge
-    fi
-    #this should likely be removed, but had some issues with munge perms
-    chown -R slurm:slurm /var/*/slurm*
-    chown -R munge:munge /etc/munge
-    chmod 700 /etc/munge
-    chown -R munge:munge /var/run/munge
-    echo "---> Starting the MUNGE Authentication service (munged) ..."
-    gosu munge /usr/sbin/munged
-
-    echo "---> Waiting for slurmctld to become active before starting slurmd..."
-
-    until 2>/dev/null >/dev/tcp/slurmctld/6817
-    do
-        echo "-- slurmctld is not available.  Sleeping ..."
-        sleep 2
-    done
-    echo "-- slurmctld is now active ..."
+#    echo "---> Waiting for slurmctld to become active before starting slurmd..."
+#    until 2>/dev/null >/dev/tcp/slurmctld/6817
+#    do
+#        echo "-- slurmctld is not available.  Sleeping ..."
+#        sleep 2
+#    done
+#    echo "-- slurmctld is now active ..."
 
     echo "---> Starting the Slurm Node Daemon (slurmd) ..."
     #slurmd entry point for starting SLURM inside kubernetes
