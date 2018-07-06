@@ -26,6 +26,17 @@ spec:
         - mountPath: /root/hostname
           name: localhost-name
           readOnly: true
+      - image: willthelaw/slurm-docker-ubuntu:latest
+        command: ["/usr/local/bin/docker-entrypoint.sh"]
+        args: ["munged"]
+        imagePullPolicy: Always
+        name: munged
+        ports:
+        resources: {}
+#        volumeMounts:
+#        - mountPath: /etc/munge
+#          name: localhost-name
+#          readOnly: true
       volumes:
         - name: localhost-name 
           hostPath:
