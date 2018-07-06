@@ -16,6 +16,7 @@ then
     chmod 700 /etc/munge
     chmod 400 /etc/munge/munge.key
     chown -R munge:munge /var/run/munge
+    chmod 755 /var/run/munge
     exec gosu munge /usr/sbin/munged -F
 fi
 
