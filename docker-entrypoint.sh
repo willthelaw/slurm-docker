@@ -50,12 +50,11 @@ then
     done
 
     echo "---> Starting the Slurm Controller Daemon (slurmctld) ..."
-    sleep 40
     exec gosu slurm /usr/sbin/slurmctld -iDvvv
 fi
 
 if [ "$1" = "slurmd" ]
-theni
+then
 #add logic to check for /var/run/munge/munge.socket.2.lock and /var/run/slurmdbd/slurmdbd.pid 
 #    echo "---> Waiting for slurmctld to become active before starting slurmd..."
 #    until 2>/dev/null >/dev/tcp/slurmctld/6817
