@@ -87,7 +87,14 @@ then
     echo "-- slurmctld is now active ..."
 
     echo "---> Starting the Slurm Node Daemon (slurmd) ..."
-    exec /usr/sbin/slurmd -Dvvv
+    #slurmd entry point for starting SLURM inside kubernetes
+    #note: /root/host-mappings should be somehow mounted into the container
+    #/etc/hostname on the host is mounted to /root/hostname
+    name=`cat /root/hostname`
+    slurmName=`grep $name /root/host-mappings | cut -f2 -d" "`
+    myip=$(awk '/32 host/ { print f } {f=$2}' <<< "$(</proc/net/fib_trie)" | sort | uniq  | grep -v 127.0.0.1)
+    scontrol update nodename=$slurmName nodeaddr=$myip nodehostname=`hostname`
+    exec slurmd -D -N $slurmName
 fi
 
 exec "$@"
