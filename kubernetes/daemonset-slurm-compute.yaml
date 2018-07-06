@@ -10,11 +10,14 @@ spec:
     metadata:
       labels:
         name: slurm-compute 
+        service: slurm
     spec:
       nodeSelector: 
         type: slurm-compute
       containers:
       - image: willthelaw/slurm-docker-ubuntu:latest
+        command: ["/usr/local/bin/docker-entrypoint.sh"]
+        args: ["slurmd"]
         imagePullPolicy: Always
         name: slurmd
         ports:

@@ -13,6 +13,7 @@ then
     #this should likely be removed, but had some issues with munge perms
     chown -R munge:munge /etc/munge
     chmod 700 /etc/munge
+    chmod 400 /etc/munge/munge.key
     chown -R munge:munge /var/run/munge
     exec gosu munge /usr/sbin/munged
 fi
