@@ -15,7 +15,8 @@ then
     chmod 400 /etc/munge/munge.key
     chown -R munge:munge /var/run/munge
     chmod -R 755 /var/run/munge
-    while () #until munge socket exists??
+    #if no munge socket, start munge
+    while ( !-S /var/run/munge/munge.socket.2 )
     do
         exec gosu munge /usr/sbin/munged -F
         chown -R munge:munge /var/run/munge
