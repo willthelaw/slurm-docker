@@ -4,10 +4,13 @@ set -e
 if [ "$1" = "munged" ]
 then
     echo "---> Starting the MUNGE Authentication service (munged) ..."
-    if [ ! -e /etc/munge/munge.key ]
-    then
-        /usr/sbin/create-munge-key
-    fi
+#    if [ ! -e /etc/munge/munge.key ]
+#    then
+#        /usr/sbin/create-munge-key
+#    fi
+    #copy in munge key
+    cp /local/munge-key/munge.key /etc/munge/munge.key
+    chmod 700 /local/munge-key
     #this should likely be removed, but had some issues with munge perms
     mkdir -p /var/run/munge
     chown -R munge:munge /etc/munge
@@ -69,7 +72,7 @@ then
     #note: /root/host-mappings should be somehow mounted into the container
     #/etc/hostname on the host is mounted to /root/hostname
     name=`cat /root/hostname`
-    slurmName=`grep $name /root/host-mappings | cut -f2 -d" "`
+    slurmName=`grep $name /root/hosts/host-mappings | cut -f2 -d" "`
     myip=$(awk '/32 host/ { print f } {f=$2}' <<< "$(</proc/net/fib_trie)" | sort | uniq  | grep -v 127.0.0.1)
     scontrol update nodename=$slurmName nodeaddr=$myip nodehostname=`hostname`
     exec slurmd -D -N $slurmName

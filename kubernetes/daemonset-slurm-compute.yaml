@@ -26,6 +26,13 @@ spec:
         - mountPath: /root/hostname
           name: localhost-name
           readOnly: true
+        - mountPath: /var/run/munge
+          name: run-munge
+        - mountPath: /root/hosts
+          name: host-mappings
+        - mountPath: /etc/slurm-llnl
+          name: etc-slurm
+          readOnly: true
       - image: willthelaw/slurm-docker-ubuntu:latest
         command: ["/usr/local/bin/docker-entrypoint.sh"]
         args: ["munged"]
@@ -33,15 +40,26 @@ spec:
         name: munged
         ports:
         resources: {}
-#        volumeMounts:
-#        - mountPath: /etc/munge
-#          name: localhost-name
-#          readOnly: true
-      volumes:
-        - name: localhost-name 
-          hostPath:
-          # directory location on host
-            path: /etc/hostname
-            type: File
+        volumeMounts:
+        - mountPath: /var/run/munge
+          name: run-munge
+        - mountPath: /local/munge-key
+          name: munge-key
       serviceAccount: default
+      volumes:
+      - name: munge-key
+        secret:
+          secretName: munge-key
+      - name: etc-slurm
+        configMap:
+          name: slurm-conf
+      - name: host-mappings
+        configMap:
+          name: host-mappings
+      - name: localhost-name
+        hostPath:
+          path: /etc/hostname
+          type: File
+      - name: run-munge
+        emptyDir: {}
       terminationGracePeriodSeconds: 10

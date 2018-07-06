@@ -1,0 +1,65 @@
+apiVersion: v1
+items:
+- apiVersion: extensions/v1beta1
+  kind: DaemonSet
+  metadata:
+    creationTimestamp: 2018-07-05T22:28:17Z
+    generation: 1
+    labels:
+      name: slurm-compute
+    name: slurm-compute
+    namespace: slurm
+    resourceVersion: "4617098"
+    selfLink: /apis/extensions/v1beta1/namespaces/slurm/daemonsets/slurm-compute
+    uid: b6dd0ce6-80a2-11e8-8db2-42010a8a0044
+  spec:
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        name: slurm-compute
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          name: slurm-compute
+      spec:
+        containers:
+        - image: willthelaw/slurm-docker-ubuntu:latest
+          imagePullPolicy: Always
+          name: slurmd
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /root/hostname
+            name: localhost-name
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        nodeSelector:
+          type: slurm-compute
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: default
+        serviceAccountName: default
+        terminationGracePeriodSeconds: 10
+        volumes:
+        - hostPath:
+            path: /etc/hostname
+            type: File
+          name: localhost-name
+    templateGeneration: 1
+    updateStrategy:
+      type: OnDelete
+  status:
+    currentNumberScheduled: 2
+    desiredNumberScheduled: 2
+    numberAvailable: 2
+    numberMisscheduled: 0
+    numberReady: 2
+    observedGeneration: 1
+    updatedNumberScheduled: 2
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
