@@ -43,6 +43,8 @@ spec:
           name: slurm-jobdir
         - mountPath: /var/log/slurm
           name: var-log-slurm
+        - mountPath: /etc/munge
+          name: etc-munge
       - args:
         - munged
         image: willthelaw/slurm-docker-ubuntu:latest

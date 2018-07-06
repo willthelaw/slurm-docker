@@ -42,7 +42,8 @@ then
 #    echo "-- slurmdbd is now active ..."
 
     #wait until munge and slurmdbd sockets are up
-    until [ -S /var/run/munge/munge.socket.2 ] && [ -d "/proc/`cat /var/run/slurmdbd/slurmdbd.pid`" ] ]
+    until [ -S /var/run/munge/munge.socket.2 ]
+#disable checking for slurmdbd running && [ -d "/proc/`cat /var/run/slurmdbd/slurmdbd.pid`" ]
     do
       sleep 2
       echo "waiting for munge and slurmdbd to start"
