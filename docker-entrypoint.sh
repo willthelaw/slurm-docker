@@ -14,7 +14,7 @@ then
     chmod 700 /etc/munge
     chmod 400 /etc/munge/munge.key
     chown -R munge:munge /var/run/munge
-    chmod 755 /var/run/munge
+    chmod -R 755 /var/run/munge
     exec gosu munge /usr/sbin/munged -F
 fi
 
@@ -42,7 +42,8 @@ then
 fi
 
 if [ "$1" = "slurmd" ]
-then
+theni
+#add logic to check for /var/run/munge/munge.socket.2.lock and /var/run/slurmdbd/slurmdbd.pid 
 #    echo "---> Waiting for slurmctld to become active before starting slurmd..."
 #    until 2>/dev/null >/dev/tcp/slurmctld/6817
 #    do
