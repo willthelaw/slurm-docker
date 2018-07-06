@@ -27,7 +27,6 @@ fi
 if [ "$1" = "slurmdbd" ]
 then
     echo "---> Starting the Slurm Database Daemon (slurmdbd) ..."
-    sleep 20
     exec gosu slurm /usr/sbin/slurmdbd -Dvvv
 fi
 
