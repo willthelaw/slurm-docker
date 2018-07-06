@@ -29,6 +29,8 @@ spec:
           name: etc-slurm
         - mountPath: /var/log/slurm
           name: var-log-slurm
+        - mountPath: /var/run/munge
+          name: run-munge
       - args:
         - slurmctld
         image: willthelaw/slurm-docker-ubuntu:latest
@@ -43,8 +45,8 @@ spec:
           name: slurm-jobdir
         - mountPath: /var/log/slurm
           name: var-log-slurm
-        - mountPath: /etc/munge
-          name: etc-munge
+        - mountPath: /var/run/munge
+          name: run-munge
       - args:
         - munged
         image: willthelaw/slurm-docker-ubuntu:latest
@@ -55,12 +57,16 @@ spec:
         volumeMounts:
         - mountPath: /etc/munge
           name: etc-munge
+        - mountPath: /var/run/munge
+          name: run-munge
       hostname: slurmcontroller
       restartPolicy: Always
       volumes:
       - name: etc-munge
         persistentVolumeClaim:
           claimName: etc-munge
+      - name: run-munge
+        emptyDir: {}
       - name: etc-slurm
         persistentVolumeClaim:
           claimName: etc-slurm
