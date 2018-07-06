@@ -29,7 +29,6 @@ spec:
           name: etc-slurm
         - mountPath: /var/log/slurm
           name: var-log-slurm
-      containers:
       - args:
         - slurmctld
         image: willthelaw/slurm-docker-ubuntu:latest
@@ -44,7 +43,6 @@ spec:
           name: slurm-jobdir
         - mountPath: /var/log/slurm
           name: var-log-slurm
-      containers:
       - args:
         - munged
         image: willthelaw/slurm-docker-ubuntu:latest

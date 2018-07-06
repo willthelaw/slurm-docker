@@ -11,11 +11,12 @@ then
         chmod 700 /etc/munge
     fi
     #this should likely be removed, but had some issues with munge perms
+    mkdir -p /var/run/munge
     chown -R munge:munge /etc/munge
     chmod 700 /etc/munge
     chmod 400 /etc/munge/munge.key
     chown -R munge:munge /var/run/munge
-    exec gosu munge /usr/sbin/munged
+    exec gosu munge /usr/sbin/munged -F
 fi
 
 if [ "$1" = "slurmdbd" ]
@@ -39,12 +40,12 @@ if [ "$1" = "slurmctld" ]
 then
     echo "---> Waiting for slurmdbd to become active before starting slurmctld ..."
 
-    until 2>/dev/null >/dev/tcp/slurmdbd/6819
-    do
-        echo "-- slurmdbd is not available.  Sleeping ..."
-        sleep 2
-    done
-    echo "-- slurmdbd is now active ..."
+#    until 2>/dev/null >/dev/tcp/slurmdbd/6819
+#    do
+#        echo "-- slurmdbd is not available.  Sleeping ..."
+#        sleep 2
+#    done
+#    echo "-- slurmdbd is now active ..."
 
     echo "---> Starting the Slurm Controller Daemon (slurmctld) ..."
     exec gosu slurm /usr/sbin/slurmctld -iDvvv
