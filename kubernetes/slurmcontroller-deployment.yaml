@@ -20,6 +20,8 @@ spec:
       - args:
         - slurmdbd
         image: willthelaw/slurm-docker-ubuntu:latest
+        command: ["/usr/local/bin/docker-entrypoint.sh"]
+        args: ["slurmdbd"]
         name: slurmdbd
         resources: {}
         volumeMounts:
@@ -33,6 +35,8 @@ spec:
       - args:
         - slurmctld
         image: willthelaw/slurm-docker-ubuntu:latest
+        command: ["/usr/local/bin/docker-entrypoint.sh"]
+        args: ["slurmctld"]
         name: slurmctld
         resources: {}
         volumeMounts:
@@ -44,7 +48,18 @@ spec:
           name: slurm-jobdir
         - mountPath: /var/log/slurm
           name: var-log-slurm
-      hostname: slurmcontroller
+      containers:
+      - args:
+        - munged
+        image: willthelaw/slurm-docker-ubuntu:latest
+        command: ["/usr/local/bin/docker-entrypoint.sh"]
+        args: ["munged"]
+        name: munged
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/munge
+          name: etc-munge
+     hostname: slurmcontroller
       restartPolicy: Always
       volumes:
       - name: etc-munge

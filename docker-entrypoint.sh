@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-if [ "$1" = "munge" ]
+if [ "$1" = "munged" ]
 then
     echo "---> Starting the MUNGE Authentication service (munged) ..."
     if [ ! -e /etc/munge/munge.key ]
