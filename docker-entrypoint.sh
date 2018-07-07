@@ -10,7 +10,6 @@ then
 #    fi
     #copy in munge key
     cp /local/munge-key/munge.key /etc/munge/munge.key
-    chmod 700 /local/munge-key
     #this should likely be removed, but had some issues with munge perms
     mkdir -p /var/run/munge
     chown -R munge:munge /etc/munge
@@ -18,13 +17,7 @@ then
     chmod 400 /etc/munge/munge.key
     chown -R munge:munge /var/run/munge
     chmod -R 755 /var/run/munge
-    #if no munge socket, start munge
-    while [ ! -S /var/run/munge/munge.socket.2 ]
-    do
-        exec gosu munge /usr/sbin/munged -F
-        chown -R munge:munge /var/run/munge
-        chmod -R 755 /var/run/munge
-    done
+    exec gosu munge /usr/sbin/munged -F
 fi
 
 if [ "$1" = "slurmdbd" ]
