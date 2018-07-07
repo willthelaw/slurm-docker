@@ -67,7 +67,9 @@ then
     name=`cat /root/hostname`
     slurmName=`grep $name /root/hosts/host-mappings | cut -f2 -d" "`
     myip=$(awk '/32 host/ { print f } {f=$2}' <<< "$(</proc/net/fib_trie)" | sort | uniq  | grep -v 127.0.0.1)
+    sleep 20
     scontrol update nodename=$slurmName nodeaddr=$myip nodehostname=`hostname`
+    sleep 10
     exec slurmd -D -N $slurmName
 fi
 
