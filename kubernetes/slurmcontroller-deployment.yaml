@@ -55,21 +55,27 @@ spec:
         name: munged
         resources: {}
         volumeMounts:
-        - mountPath: /etc/munge
-          name: etc-munge
+        - mountPath: /local/munge-key
+          name: munge-key
         - mountPath: /var/run/munge
           name: run-munge
       hostname: slurmcontroller
       restartPolicy: Always
       volumes:
-      - name: etc-munge
-        persistentVolumeClaim:
-          claimName: etc-munge
+      - name: munge-key
+        secret:
+          secretName: munge-key
+      - name: etc-slurm
+        configMap:
+          name: slurm-conf
+#      - name: etc-munge
+#        persistentVolumeClaim:
+#          claimName: etc-munge
       - name: run-munge
         emptyDir: {}
-      - name: etc-slurm
-        persistentVolumeClaim:
-          claimName: etc-slurm
+#      - name: etc-slurm
+#        persistentVolumeClaim:
+#          claimName: etc-slurm
       - name: var-log-slurm
         persistentVolumeClaim:
           claimName: var-log-slurm
