@@ -35,6 +35,7 @@ spec:
           name: run-munge
         - mountPath: /var/lib/extrausers
           name: extra-users
+          readOnly: true
       - args:
         - slurmctld
         image: willthelaw/slurm-docker-ubuntu:latest
@@ -53,6 +54,7 @@ spec:
           name: run-munge
         - mountPath: /var/lib/extrausers
           name: extra-users
+          readOnly: true
       - args:
         - munged
         image: willthelaw/slurm-docker-ubuntu:latest
@@ -67,6 +69,7 @@ spec:
           name: run-munge
         - mountPath: /var/lib/extrausers
           name: extra-users
+          readOnly: true
       hostname: slurmcontroller
       restartPolicy: Always
       volumes:

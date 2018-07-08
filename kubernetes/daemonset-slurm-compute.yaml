@@ -64,7 +64,7 @@ spec:
         configMap:
           #mode: 0555
           defaultMode: 0555
-          name: slurm-conf
+          name: slurm-node-conf
       - name: host-mappings
         configMap:
           name: host-mappings
