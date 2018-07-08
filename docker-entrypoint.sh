@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+#enable extrausers, just in case
+sed -i '/^\(passwd\|group\|shadow\):/{ s/$/ extrausers/; }' /etc/nsswitch.conf
+
 if [ "$1" = "munged" ]
 then
     echo "---> Starting the MUNGE Authentication service (munged) ..."

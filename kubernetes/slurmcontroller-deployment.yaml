@@ -4,7 +4,7 @@ metadata:
   annotations:
   creationTimestamp: null
   labels:
-    io.kompose.service: slurmcontroller
+    service: slurmcontroller
   name: slurmcontroller
 spec:
   replicas: 1
@@ -14,7 +14,7 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        io.kompose.service: slurmcontroller
+        service: slurmcontroller
     spec:
       containers:
       - args:
@@ -27,10 +27,14 @@ spec:
         volumeMounts:
         - mountPath: /etc/slurm-llnl
           name: etc-slurm
+        - mountPath: /var/lib/slurmd
+          name: slurm-jobdir
         - mountPath: /var/log/slurm
           name: var-log-slurm
         - mountPath: /var/run/munge
           name: run-munge
+        - mountPath: /var/lib/extrausers
+          name: extra-users
       - args:
         - slurmctld
         image: willthelaw/slurm-docker-ubuntu:latest
@@ -41,12 +45,14 @@ spec:
         volumeMounts:
         - mountPath: /etc/slurm-llnl
           name: etc-slurm
-        - mountPath: /data
+        - mountPath: /var/lib/slurmd
           name: slurm-jobdir
         - mountPath: /var/log/slurm
           name: var-log-slurm
         - mountPath: /var/run/munge
           name: run-munge
+        - mountPath: /var/lib/extrausers
+          name: extra-users
       - args:
         - munged
         image: willthelaw/slurm-docker-ubuntu:latest
@@ -59,15 +65,22 @@ spec:
           name: munge-key
         - mountPath: /var/run/munge
           name: run-munge
+        - mountPath: /var/lib/extrausers
+          name: extra-users
       hostname: slurmcontroller
       restartPolicy: Always
       volumes:
       - name: munge-key
         secret:
           secretName: munge-key
+      - name: extra-users
+        configMap:
+          name: extrausers
+          defaultMode: 0555
       - name: etc-slurm
         configMap:
           name: slurm-conf
+          defaultMode: 0555
 #      - name: etc-munge
 #        persistentVolumeClaim:
 #          claimName: etc-munge

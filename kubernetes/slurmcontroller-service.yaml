@@ -2,13 +2,17 @@ kind: Service
 apiVersion: v1
 metadata:
   labels:
-    service: slurm
-    io.kompose.service: slurmcontroller
+    service: slurmcontroller
   name: slurmcontroller
 spec:
   selector:
-    io.kompose.service: slurmcontroller
+    service: slurmcontroller
   ports:
   - protocol: TCP
     port: 6817
+    name: slurmctld
     targetPort: 6817
+  - protocol: TCP
+    port: 6819
+    name: slurmdbd
+    targetPort: 6819

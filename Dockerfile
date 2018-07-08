@@ -52,10 +52,6 @@ RUN set -x \
     && chmod +x /usr/local/bin/gosu \
     && gosu nobody true
 
-#enable extra users files for /etc/{passwd,shadow,group}
-RUN set -x \
-    sed -i '/^\(passwd\|group\|shadow\):/{ s/$/ extrausers/; }' /etc/nsswitch.conf
-
 RUN set -x \
     && mkdir /var/spool/slurmd \
         /var/run/slurmd \
@@ -80,6 +76,9 @@ RUN set -x \
 
 #COPY slurm.conf /etc/slurm/slurm.conf
 #COPY slurmdbd.conf /etc/slurm/slurmdbd.conf
+
+#enable extra users files for /etc/{passwd,shadow,group}
+COPY nsswitch.conf /etc/nsswitch.conf
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
