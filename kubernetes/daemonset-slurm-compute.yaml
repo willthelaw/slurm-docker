@@ -36,6 +36,9 @@ spec:
           name: run-munge
         - mountPath: /root/hosts
           name: host-mappings
+        - mountPath: /mnt/autofs
+          name: autofs
+          readOnly: true
         - mountPath: /etc/slurm-llnl
           name: etc-slurm
           readOnly: true

@@ -26,6 +26,8 @@ fi
 if [ "$1" = "slurmdbd" ]
 then
     echo "---> Starting automount"
+    cp /mnt/autofs/auto.* /etc
+    chmod 444 /etc/auto.*
     BROWSE_MODE="no" /usr/sbin/automount -t 0 -f /etc/auto.master &
     echo "---> Starting the Slurm Database Daemon (slurmdbd) ..."
     exec gosu slurm /usr/sbin/slurmdbd -Dvvv
