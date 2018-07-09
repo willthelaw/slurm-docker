@@ -15,6 +15,8 @@ RUN apt-get update
 
 RUN apt-get  -y install \
            screen \
+           keyutils \
+           autofs \
            libnss-extrausers \
            wget \
            bzip2 \
