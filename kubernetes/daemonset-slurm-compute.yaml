@@ -58,8 +58,8 @@ spec:
           name: extra-users
           readOnly: true
       - image: willthelaw/slurm-docker-ubuntu:latest
-        command: ["/usr/local/bin/docker-entrypoint.sh"]
-        args: ["autofs"]
+        command: ["/usr/sbin/automount"]
+        args: ["-t 0 -f /etc/auto.master"]
         imagePullPolicy: Always
         name: autofs
         resources: {}

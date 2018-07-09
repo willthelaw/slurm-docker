@@ -45,7 +45,7 @@ RUN pip install Cython nose \
     && pip3 install Cython nose
 
 #create symlinks for autofs
-RUN ln -s /mnt/autofs/auto.master /etc/auto.master && ln -s /mnt/autofs/auto.home /etc/auto.home && ln -s /mnt/autofs/auto.share /etc/auto.share
+RUN rm /etc/auto.master && ln -s /mnt/autofs/auto.master /etc/auto.master && ln -s /mnt/autofs/auto.home /etc/auto.home && ln -s /mnt/autofs/auto.share /etc/auto.share
 
 RUN set -x \
     && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-amd64" \

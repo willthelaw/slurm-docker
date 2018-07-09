@@ -1,1 +1,1 @@
-wlaw	-nfsvers=4	wlaw-nfs.wlaw.svc.cluster.local:/
+wlaw    -nfsvers=4,-nobrowse    wlaw-nfs.wlaw.svc.cluster.local:/
