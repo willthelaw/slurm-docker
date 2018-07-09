@@ -18,6 +18,8 @@ spec:
       - image: willthelaw/slurm-docker-ubuntu:latest
         command: ["/usr/local/bin/docker-entrypoint.sh"]
         args: ["slurmd"]
+        securityContext:
+          privileged: true
         imagePullPolicy: Always
         #lifecycle:
         #  postStart:
@@ -55,6 +57,19 @@ spec:
         - mountPath: /var/lib/extrausers
           name: extra-users
           readOnly: true
+      - image: willthelaw/slurm-docker-ubuntu:latest
+        command: ["/usr/local/bin/docker-entrypoint.sh"]
+        args: ["autofs"]
+        imagePullPolicy: Always
+        name: autofs
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/extrausers
+          name: extra-users
+          readOnly: true
+        - mountPath: /mnt/autofs
+          name: autofs
+          readOnly: true
       serviceAccount: default
       volumes:
       - name: munge-key
@@ -65,6 +80,10 @@ spec:
           #mode: 0555
           defaultMode: 0555
           name: slurm-node-conf
+      - name: autofs
+        configMap:
+          defaultMode: 0555
+          name: autofs
       - name: host-mappings
         configMap:
           name: host-mappings

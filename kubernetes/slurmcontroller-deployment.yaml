@@ -23,6 +23,9 @@ spec:
         args: ["slurmdbd"]
         image: willthelaw/slurm-docker-ubuntu:latest
         name: slurmdbd
+        ports:
+        - containerPort: 6819
+          protocol: TCP
         resources: {}
         volumeMounts:
         - mountPath: /etc/slurm-llnl
@@ -41,6 +44,9 @@ spec:
         image: willthelaw/slurm-docker-ubuntu:latest
         command: ["/usr/local/bin/docker-entrypoint.sh"]
         args: ["slurmctld"]
+        ports:
+        - containerPort: 6817
+          protocol: TCP
         name: slurmctld
         resources: {}
         volumeMounts:

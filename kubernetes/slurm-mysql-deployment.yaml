@@ -21,12 +21,15 @@ spec:
         - name: MYSQL_DATABASE
           value: slurm_acct_db
         - name: MYSQL_PASSWORD
-          value: password
-        - name: MYSQL_RANDOM_ROOT_PASSWORD
-          value: "yes"
+          value: "password"
+        - name: MYSQL_ROOT_PASSWORD
+          value: "fancypassword"
         - name: MYSQL_USER
           value: slurm
         image: mariadb:latest
+        ports:
+        - containerPort: 3306
+          protocol: TCP
 #mysql:5.7
         name: slurm-mysql
         resources: {}

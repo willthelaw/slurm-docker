@@ -1,0 +1,2 @@
+#sw -nfsvers=3 independence.local:/export/&
+#apps -nfsvers=3 independence.local:/export/&
