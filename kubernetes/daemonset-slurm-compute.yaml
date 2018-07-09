@@ -14,17 +14,6 @@ spec:
     spec:
       nodeSelector: 
         type: slurm-compute
-      initContainers:
-      - image: willthelaw/slurm-docker-ubuntu:latest
-        command: ["/bin/chmod"]
-        args: ["0777", "/home"]
-        securityContext:
-          privileged: true
-        imagePullPolicy: Always
-        name: fixperms
-        volumeMounts:
-        - mountPath: /home
-          name: home
       containers:
       - image: willthelaw/slurm-docker-ubuntu:latest
         command: ["/usr/local/bin/docker-entrypoint.sh"]
@@ -53,8 +42,6 @@ spec:
         - mountPath: /var/lib/extrausers
           name: extra-users
           readOnly: true
-        - mountPath: /home
-          name: home
       - image: willthelaw/slurm-docker-ubuntu:latest
         command: ["/usr/local/bin/docker-entrypoint.sh"]
         args: ["munged"]
@@ -69,25 +56,6 @@ spec:
           name: munge-key
         - mountPath: /var/lib/extrausers
           name: extra-users
-          readOnly: true
-      - image: willthelaw/slurm-docker-ubuntu:latest
-        command: ["/usr/sbin/automount"]
-        args: ["-t", "0", "-f", "/etc/auto.master"]
-        securityContext:
-          privileged: true
-        imagePullPolicy: Always
-        name: autofs
-        resources: {}
-        volumeMounts:
-        - mountPath: /var/lib/extrausers
-          name: extra-users
-          readOnly: true
-        - mountPath: /home
-          name: home
-        - mountPath: /share
-          name: share
-        - mountPath: /mnt/autofs
-          name: autofs
           readOnly: true
       serviceAccount: default
       volumes:
@@ -116,8 +84,4 @@ spec:
         configMap:
           name: extrausers
           defaultMode: 0555
-      - name: home
-        emptyDir: {}
-      - name: share
-        emptyDir: {}
       terminationGracePeriodSeconds: 10
