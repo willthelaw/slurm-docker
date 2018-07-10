@@ -1,0 +1,6 @@
+#!/bin/bash
+. $PWD/slurm-docker.conf
+
+docker run \
+  -v $PWD/etc:/var/lib/extrausers \
+  ${CONTAINER_PREFIX}/slurm-users $@

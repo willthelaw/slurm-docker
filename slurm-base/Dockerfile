@@ -1,17 +1,18 @@
 FROM ubuntu:18.04
 
-LABEL org.label-schema.docker.cmd="docker-compose up -d" \
-      org.label-schema.name="slurm-docker-cluster" \
+env DEBIAN_FRONTEND noninteractive
+
+LABEL org.label-schema.name="slurm-docker" \
       org.label-schema.description="Slurm Docker cluster on Ubuntu 18.04" \
       maintainer="William Law"
 
 ARG SLURM_VERSION=17.11.2
-#ARG SLURM_DOWNLOAD_MD5=b32f4260a921d335a2d52950593f0a29
-#ARG SLURM_DOWNLOAD_URL=https://download.schedmd.com/slurm/slurm-17.11.2.tar.bz2
 
 ARG GOSU_VERSION=1.10
 
 RUN apt-get update
+
+RUN apt-get -y dist-upgrade
 
 RUN apt-get  -y install \
            screen \

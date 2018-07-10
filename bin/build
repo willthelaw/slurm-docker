@@ -1,0 +1,5 @@
+#!/bin/bash
+. $PWD/slurm-docker.conf
+
+docker build -t ${CONTAINER_PREFIX}/slurm-base slurm-base
+docker build -t ${CONTAINER_PREFIX}/slurm-users slurm-users

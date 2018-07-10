@@ -8,21 +8,19 @@ function update_ent {
 
 case $1 in
  add)
-   useradd -M -s /bin/bash -c "$2"  "$2"
-#   users passwordless, set up for smb
-#   echo "$2:$3" | chpasswd
-#   echo -e "$3\n$3" | (smbpasswd -a -s "$2")
-   update_ent
+#   cat /var/lib/extrausers/passwd >> /etc/passwd
+#   cat /var/lib/extrausers/group >> /etc/group
+#   cat /var/lib/extrausers/shadow >> /etc/shadow
+#   useradd -M -s /bin/bash -c "$2"  "$2"
+#   update_ent
+    adduser --disabled-password --extrausers --no-create-home --shell /bin/bash $2
  ;;
  delete)
    cp /etc/passwd /etc/shadow /etc/group /tmp/
-
    for file in passwd shadow group; do
      cat /var/lib/extrausers/$file >> /etc/$file
    done
-
    userdel $2 
-
    for file in passwd shadow group; do
      diff /tmp/$file /etc/$file | sed -n '/^-[^-]/{ s/^-//; p; }' >> /var/lib/extrausers/$file
    done
