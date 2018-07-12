@@ -8,12 +8,7 @@ function update_ent {
 
 case $1 in
  add)
-#   cat /var/lib/extrausers/passwd >> /etc/passwd
-#   cat /var/lib/extrausers/group >> /etc/group
-#   cat /var/lib/extrausers/shadow >> /etc/shadow
-#   useradd -M -s /bin/bash -c "$2"  "$2"
-#   update_ent
-    adduser --disabled-password --extrausers --no-create-home --shell /bin/bash $2
+    adduser --disabled-password --extrausers --no-create-home --shell /bin/bash --quiet --gecos $2 $2
  ;;
  delete)
    cp /etc/passwd /etc/shadow /etc/group /tmp/
