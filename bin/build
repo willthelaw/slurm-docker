@@ -3,3 +3,5 @@
 
 docker build -t ${CONTAINER_PREFIX}/slurm-base slurm-base
 docker build -t ${CONTAINER_PREFIX}/slurm-users slurm-users
+docker build -t ${CONTAINER_PREFIX}/slurm-gpu slurm-gpu
+docker build -t ${CONTAINER_PREFIX}/slurm-login slurm-login

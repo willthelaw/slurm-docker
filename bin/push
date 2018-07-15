@@ -1,0 +1,6 @@
+#!/bin/bash
+. $PWD/slurm-docker.conf
+
+docker push ${CONTAINER_PREFIX}/slurm-base
+docker push ${CONTAINER_PREFIX}/slurm-users
+docker push ${CONTAINER_PREFIX}/slurm-gpu
